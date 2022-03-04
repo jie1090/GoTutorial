@@ -40,12 +40,53 @@ func main() {
 }
 
 func printLists(client pb.StreamServiceClient, r *pb.StreamRequest) error {
-	stream, err := client.List(context.Background(), r)
+	// stream, err := client.List(context.Background(), r)
+	// if err != nil {
+	// 	return err
+	// }
+
+	// for {
+	// 	resp, err := stream.Recv()
+	// 	if err == io.EOF {
+	// 		break
+	// 	}
+	// 	if err != nil {
+	// 		return err
+	// 	}
+
+	// 	log.Printf("resp: pt.name: %s, pt.value: %d", resp.Pt.Name, resp.Pt.Value)
+	// }
+
+	return nil
+}
+func printRecord(client pb.StreamServiceClient, r *pb.StreamRequest) error {
+	// stream, err := client.Record(context.Background())
+	// if err != nil {
+	// 	return err
+	// }
+	// for n := 0; n < 6; n++ {
+	// 	err := stream.Send(r)
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	// }
+	// resp, err := stream.CloseAndRecv()
+	// if err != nil {
+	// 	return err
+	// }
+	// log.Printf("resp: pt.name: %s, pt.value: %d", resp.Pt.Name, resp.Pt.Value)
+	return nil
+}
+func printRoute(client pb.StreamServiceClient, r *pb.StreamRequest) error {
+	stream, err := client.Route(context.Background())
 	if err != nil {
 		return err
 	}
-
-	for {
+	for n := 0; n <= 6; n++ {
+		err = stream.Send(r)
+		if err != nil {
+			return err
+		}
 		resp, err := stream.Recv()
 		if err == io.EOF {
 			break
@@ -53,15 +94,8 @@ func printLists(client pb.StreamServiceClient, r *pb.StreamRequest) error {
 		if err != nil {
 			return err
 		}
-
-		log.Printf("resp: pt.name: %s, pt.value: %d", resp.Pt.Name, resp.Pt.Value)
+		log.Printf("resp: pj.name: %s, pt.value: %d", resp.Pt.Name, resp.Pt.Value)
 	}
-
-	return nil
-}
-func printRecord(client pb.StreamServiceClient, r *pb.StreamRequest) error {
-	return nil
-}
-func printRoute(client pb.StreamServiceClient, r *pb.StreamRequest) error {
+	stream.CloseSend()
 	return nil
 }

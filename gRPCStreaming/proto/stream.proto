@@ -7,7 +7,7 @@ package proto;
 service StreamService {
     rpc List (StreamRequest) returns (stream StreamResponse) {};
 
-    rpc Record (stream StreamRequest)   returns (stream StreamResponse) {};
+    rpc Record (stream StreamRequest)   returns (StreamResponse) {};
 
     rpc Route(stream StreamRequest) returns (stream StreamResponse) {};
 }
